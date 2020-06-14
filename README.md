@@ -1,8 +1,9 @@
-# Puma::Newrelic
+# Puma::NewRelic
 
-Welcome to your new gem! In this directory, you'll find the files you need to be able to package up your Ruby library into a gem. Put your Ruby code in the file `lib/puma/newrelic`. To experiment with that code, run `bin/console` for an interactive prompt.
+This is a Puma plugin for NewRelic custom metrics.
+It will sample the Puma stats and create a custom metric for NewRelic.
+You can view the information in the NewRelic insights or in NewRelic One.
 
-TODO: Delete this and the text above, and describe your gem
 
 ## Installation
 
