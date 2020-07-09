@@ -24,7 +24,7 @@ Or install it yourself as:
 ## Usage
 
 * Install the gem
-* Add `plugin 'new-relic-stats'` to your puma.rb
+* Add `plugin 'new_relic_stats'` to your puma.rb
 * Create a dashboard on the NewRelic insights or NewRelic One
 
 NQRL example: 
