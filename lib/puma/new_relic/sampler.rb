@@ -16,8 +16,11 @@ module Puma
           begin
             if should_sample?
               @last_sample_at = Time.now
-
-              parse JSON.parse(@launcher.stats)
+              puma_stats = @launcher.stats
+              if puma_stats.is_a?(Hash)
+                parse puma_stats
+              else
+                parse JSON.parse(puma_stats, symbolize_names: true)
             end
           rescue Exception => e
             ::NewRelic::Agent.logger.error(e.message)
