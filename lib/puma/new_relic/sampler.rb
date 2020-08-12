@@ -21,6 +21,7 @@ module Puma
                 parse puma_stats
               else
                 parse JSON.parse(puma_stats, symbolize_names: true)
+              end
             end
           rescue Exception => e
             ::NewRelic::Agent.logger.error(e.message)
