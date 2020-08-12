@@ -1,7 +1,7 @@
 module Puma
   module NewRelic
     class Sampler
-      KEYS = %w(backlog running pool_capacity max_threads)
+      KEYS = %i(backlog running pool_capacity max_threads)
 
       def initialize(launcher, sample_rate)
         @launcher       = launcher
@@ -41,10 +41,10 @@ module Puma
         metrics = Hash.new { |h, k| h[k] = 0 }
         sum     = ->(key, value) { metrics[key] += value if KEYS.include?(key) }
 
-        if stats["workers"]
-          metrics["workers"] = stats["workers"]
-          stats["worker_status"].each do |worker|
-            worker["last_status"].each(&sum)
+        if stats[:workers]
+          metrics[:workers] = stats[:workers]
+          stats[:worker_status].each do |worker|
+            worker[:last_status].each(&sum)
           end
         else
           stats.each(&sum)
