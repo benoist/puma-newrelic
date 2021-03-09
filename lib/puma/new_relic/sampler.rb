@@ -5,7 +5,7 @@ module Puma
         config          = ::NewRelic::Agent.config[:puma]
         @launcher       = launcher
         @sample_rate    = config.fetch("sample_rate", 15)
-        @keys           = config.fetch("keys", %i(backlog running pool_capacity max_threads))
+        @keys           = config.fetch("keys", %w(backlog running pool_capacity max_threads)).map(&:to_sym)
         @last_sample_at = Time.now
       end
 
