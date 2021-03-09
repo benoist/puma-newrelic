@@ -28,12 +28,24 @@ Or install it yourself as:
 * Create a dashboard on the NewRelic insights or NewRelic One
 
 NQRL example: 
-```
+```SQL
 SELECT rate(average(newrelic.timeslice.value), 1 minute) 
 FROM Metric 
 WHERE appName ='My App Name' 
 WITH METRIC_FORMAT 'Custom/Puma/pool_capacity' 
 TIMESERIES FACET `host` LIMIT 10 SINCE 1800 seconds ago
+```
+
+## Extra config in newrelic.yml
+```yaml
+common: &default_settings
+    puma:
+      sample_rate: 15
+      keys:
+        - backlog
+        - running
+        - pool_capacity
+        - max_threads
 ```
 
 ## Development

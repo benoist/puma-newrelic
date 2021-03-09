@@ -1,11 +1,11 @@
 module Puma
   module NewRelic
     class Sampler
-      KEYS = %i(backlog running pool_capacity max_threads)
-
-      def initialize(launcher, sample_rate)
+      def initialize(launcher)
+        config          = ::NewRelic::Agent.config[:puma]
         @launcher       = launcher
-        @sample_rate    = sample_rate
+        @sample_rate    = config.fetch("sample_rate", 15)
+        @keys           = config.fetch("keys", %i(backlog running pool_capacity max_threads))
         @last_sample_at = Time.now
       end
 
@@ -16,7 +16,7 @@ module Puma
           begin
             if should_sample?
               @last_sample_at = Time.now
-              puma_stats = @launcher.stats
+              puma_stats      = @launcher.stats
               if puma_stats.is_a?(Hash)
                 parse puma_stats
               else
@@ -39,7 +39,7 @@ module Puma
 
       def parse(stats)
         metrics = Hash.new { |h, k| h[k] = 0 }
-        sum     = ->(key, value) { metrics[key] += value if KEYS.include?(key) }
+        sum     = ->(key, value) { metrics[key] += value if @keys.include?(key) }
 
         if stats[:workers]
           metrics[:workers] = stats[:workers]
