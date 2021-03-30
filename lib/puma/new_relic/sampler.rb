@@ -2,7 +2,7 @@ module Puma
   module NewRelic
     class Sampler
       def initialize(launcher)
-        config          = ::NewRelic::Agent.config[:puma]
+        config          = ::NewRelic::Agent.config[:puma] || {}
         @launcher       = launcher
         @sample_rate    = config.fetch("sample_rate", 15)
         @keys           = config.fetch("keys", %w(backlog running pool_capacity max_threads)).map(&:to_sym)
