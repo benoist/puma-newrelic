@@ -1,3 +1,5 @@
+require 'newrelic_rpm'
+
 module Puma
   module NewRelic
     class Sampler
