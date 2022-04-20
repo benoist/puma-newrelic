@@ -5,7 +5,7 @@ module Puma
         config          = ::NewRelic::Agent.config[:puma] || {}
         @launcher       = launcher
         @sample_rate    = config.fetch("sample_rate", 15)
-        @keys           = config.fetch("keys", %w(backlog running pool_capacity max_threads)).map(&:to_sym)
+        @keys           = config.fetch("keys", %w(backlog running pool_capacity max_threads)).map(&:to_s)
         @last_sample_at = Time.now
       end
 
@@ -39,7 +39,7 @@ module Puma
 
       def parse(stats)
         metrics = Hash.new { |h, k| h[k] = 0 }
-        sum     = ->(key, value) { metrics[key] += value if @keys.include?(key) }
+        sum     = ->(key, value) { metrics[key.to_s.gsub("puma_", "")] += value if @keys.include?(key.to_s.gsub("puma_", "")) }
 
         if stats[:workers]
           metrics[:workers] = stats[:workers]
