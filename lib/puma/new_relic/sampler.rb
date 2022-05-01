@@ -39,15 +39,14 @@ module Puma
 
       def parse(stats)
         metrics = Hash.new { |h, k| h[k] = 0 }
-        sum     = ->(key, value) { metrics[key.to_s.gsub("puma_", "")] += value if @keys.include?(key.to_s.gsub("puma_", "")) }
 
         if stats[:workers]
           metrics[:workers] = stats[:workers]
           stats[:worker_status].each do |worker|
-            worker[:last_status].each(&sum)
+            worker[:last_status].each { |key, value| metrics[key.to_s] += value if @keys.include?(key.to_s) }
           end
         else
-          stats.each(&sum)
+          stats.each { |key, value| metrics[key.to_s] += value if @keys.include?(key.to_s) }
         end
         report_metrics(metrics)
       end
